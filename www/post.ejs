@@ -1,0 +1,49 @@
+<!-- Importer le header en EJS -->
+<%- include('statics/header') -%>
+
+<main>
+    <h2>Page protégée</h2>
+
+    <h3>Article</h3>
+
+    <%- data.data.post.headline %><br>
+    <%- data.data.post.body %>
+
+    <%- include('components/form-comment') -%>
+
+    <h3>Commentaires</h3>
+    <% if (data.data.comments) { %>
+        <ul>
+            <% for (let item of data.data.comments) { %>
+                <li class="comment">
+                    <%- item.author.givenName %>:<br>
+                    <%- item.content %>
+                    <div class="buttons-block">
+                        <form name="comment_form_delete<%- item.id %>" id="comment_form_delete" action="/comment/delete" method="POST">
+                            <input type="hidden" name="id" value="<%- item.id %>">
+                            <input type="hidden" name="post" id="post" value="<%- data.data.post.id %>">
+                            <button type="submit" class="error-btn delete-btn">Supprimer</button>
+                        </form>
+                    </div>
+                    <% if( item.author.id == data.data.user.id ) { %>
+                        <div id="<%- item.id %>" class="update-form">
+                            <form name="comment_form_update<%- item.id %>" id="comment_form_update" action="/comment/update" method="POST">
+
+                                <input type="hidden" name="id" value="<%- item.id %>">
+                                <input type="hidden" name="post" id="post" placeholder="<%- data.data.post.id %>">
+
+                                <label for="email">Modifier votre commentaire</label><br><br>
+                                <textarea name="content" id="content" rows="100" required><%- item.content %></textarea><br><br><br>
+
+                                <button type="submit" class="success-btn">Modifier</button>
+                            </form>
+                        </div>
+                    <% } %>
+                </li>
+            <% } %>
+        </ul>
+    <% } %>
+</main>
+
+<!-- Importer le footer en EJS -->
+<%- include('statics/footer') -%>  

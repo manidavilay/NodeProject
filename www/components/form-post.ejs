@@ -1,0 +1,15 @@
+<!-- 
+    Créer le formulaire de post
+-->
+
+<form action="/post" method="POST">
+
+    <label for="headline">Titre</label>
+    <input type="text" name="headline" required minlength="2" placeholder="Titre de l'article">
+
+    <label for="body">Contenu</label>
+    <textarea name="body" required minlength="2" placeholder="Contenu de l'article"></textarea>
+
+    <button type="submit">Ajouter</button>
+
+</form>

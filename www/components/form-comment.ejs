@@ -1,0 +1,14 @@
+<!-- 
+    Créer le formulaire de commentaire
+-->
+
+<form name="comment_form" id="comment_form" action="/comment" method="POST">
+
+    <input type="hidden" name="post" id="post" value="<%- data.data.post.id %>">
+
+    <label for="email">Commentaire</label>
+    <input type="text" name="content" id="content" required placeholder="Ajouter un commentaire">
+
+    <button type="submit">Commenter</button>
+
+</form>
