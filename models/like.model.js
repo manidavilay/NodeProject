@@ -8,9 +8,7 @@ const { Schema } = mongoose;
 const MySchema = new Schema({
     // Schema.org
     '@context': { type: String, default: 'http://schema.org' },
-    '@type': { type: String, default: 'Commentaire' },
-
-    content: String,
+    '@type': { type: String, default: 'Like' },
 
     // Associer le profil utilisateur
     author: {
@@ -18,26 +16,26 @@ const MySchema = new Schema({
         ref: 'user'  
     },
 
-    // Associer le post
-    post: {
+    comment: {
         type: Schema.Types.ObjectId,
-        ref: 'post'
+        ref: 'comment',
+        default: null
     },
 
-    likes: [{
+    post: {
         type: Schema.Types.ObjectId,
-        ref: 'like'
-    }],
+        ref: 'post',
+        default: null
+    },
 
     // Définir une valeur par défaut
     creationDate: { type: Date, default: new Date() },
     dateModified: { type: Date, default: new Date() },
-    isPublished: { type: Boolean, default: false }
+    isPublished: { type: Boolean, default: true }
 })
-//
 
 /* 
 Export
 */
-module.exports = mongoose.model('comment', MySchema)
+module.exports = mongoose.model('like', MySchema)
 //

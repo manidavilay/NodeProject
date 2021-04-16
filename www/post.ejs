@@ -6,29 +6,37 @@
 
     <h3>Article</h3>
 
+    <p>Utilisateur: <%- data.data.user.givenName %></p><br>
     <%- data.data.post.headline %><br>
-    <%- data.data.post.body %>
+    <%- data.data.post.body %><br>
 
     <%- include('components/form-comment') -%>
 
-    <h3>Commentaires</h3>
+    <h3>Liste des commentaires</h3>
     
     <% if (data.data.comments) { %>
         <ul>
             <% for (let item of data.data.comments) { %>
                 <li class="comment">
-                    <%- item.author.givenName %>:<br>
-                    <%- item.content %>
+                    Auteur du commentaire: <%- item.author.givenName %><br>
+                    Commentaire:<br><%- item.content %>
                     <div class="buttons-block">
-                        <form name="comment_form_delete<%- item.id %>" id="comment_form_delete" action="/comment/delete" method="POST">
+                        <form name="comment_form_delete" id="comment_form_delete" action="/comment/<%- item.id %>/delete" method="POST">
                             <input type="hidden" name="id" value="<%- item.id %>">
                             <input type="hidden" name="post" id="post" value="<%- data.data.post.id %>">
-                            <button type="submit" class="error-btn delete-btn">Supprimer</button>
+                            <% if( item.author.id == data.data.user.id ) { %>
+                                <button type="submit" class="error-btn delete-btn">Supprimer</button>
+                            <% } %>
                         </form>
+                        <form name="like_form" id="like_form" action="/like" method="POST">
+                            <input type="hidden" name="comment" id="comment" value="<%- item._id %>">
+                            <button type="submit" id="like-btn">J'aime</button>
+                        </form>
+                        <%- item.likes.length %>
                     </div>
                     <% if( item.author.id == data.data.user.id ) { %>
                         <div id="<%- item.id %>" class="update-form">
-                            <form name="comment_form_update<%- item.id %>" id="comment_form_update" action="/comment/update" method="POST">
+                            <form name="comment_form_update" id="comment_form_update" action="/comment/<%- item.id %>" method="POST">
 
                                 <input type="hidden" name="id" value="<%- item.id %>">
                                 <input type="hidden" name="post" id="post" placeholder="<%- data.data.post.id %>">
@@ -40,11 +48,10 @@
                             </form>
                         </div>
                     <% } %>
-                </li>
             <% } %>
         </ul>
     <% } %>
 </main>
 
 <!-- Importer le footer en EJS -->
-<%- include('statics/footer') -%>  
+<%- include('statics/footer') -%>

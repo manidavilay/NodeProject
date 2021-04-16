@@ -4,8 +4,9 @@ Definition
 const Controllers = {
     auth: require('./auth.controller'),
     post: require('./post.controller'),
+    user: require('./user.controller'),
     comment: require('./comment.controller'),
-    user: require('./user.controller')
+    like: require('./like.controller')
 }
 //
 

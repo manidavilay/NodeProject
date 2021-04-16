@@ -44,7 +44,9 @@ class BackendRouter {
             let data =  {
                 post: '',
                 comments: '',
-                user: ''
+                user: '',
+                postLikes: '',
+                commentLikes: ''
             }
 
             await Controllers[req.params.endpoint].readOne(req.params.id)
@@ -115,12 +117,7 @@ class BackendRouter {
                 return renderErrorVue('index', req, res, 'No data provided',  'Request failed')
             }
             else {
-                // Check body data
-                const { ok, extra, miss } = checkFields( Mandatory[req.params.endpoint], req.body );
-
-                // Error: bad fields provided
-                if( !ok ){ return renderErrorVue('index', `/${req.params.endpoint}`, 'POST', res, 'Bad fields provided', { extra, miss }) }
-                else {
+                if(req.params.endpoint == 'like') {
                     // Add author _id
                     req.body.author = req.user._id;
 
@@ -128,6 +125,22 @@ class BackendRouter {
                     Controllers[req.params.endpoint].createOne(req)
                     .then( apiResponse =>  res.redirect('/', req, res, 'Request succeed', apiResponse, true) )
                     .catch( apiError => renderErrorVue('index', req, res, apiError,  'Request failed') )
+
+                } else {
+                    // Check body data
+                    const { ok, extra, miss } = checkFields( Mandatory[req.params.endpoint], req.body );
+                    
+                    // Error: bad fields provided
+                    if( !ok ){ return renderErrorVue('index', `/${req.params.endpoint}`, 'POST', res, 'Bad fields provided', { extra, miss }) }
+                    else {
+                        // Add author _id
+                        req.body.author = req.user._id;
+            
+                        // Use the controller to create nex object
+                        Controllers[req.params.endpoint].createOne(req)
+                        .then( apiResponse =>  res.redirect('/', req, res, 'Request succeed', apiResponse, true) )
+                        .catch( apiError => renderErrorVue('index', req, res, apiError,  'Request failed') )
+                    }
                 }
             }
         })
@@ -149,7 +162,7 @@ class BackendRouter {
         })
 
         // [BACKOFFICE] get data from client to create object, protected by Passport MiddleWare - Delete
-        this.router.post('/:endpoint/:id', this.passport.authenticate('jwt', { session: false, failureRedirect: '/'}), (req, res) => {
+        this.router.post('/:endpoint/:id/delete', this.passport.authenticate('jwt', { session: false, failureRedirect: '/'}), (req, res) => {
             // Check body data
             if ( typeof req.body === 'undefined' || req.body === null || Object.keys(req.body).length === 0) {
                 return renderErrorVue('index', req, res, 'No data provided', 'Request failed')

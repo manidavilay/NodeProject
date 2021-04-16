@@ -145,6 +145,11 @@ Global
 /*
 Post & comments
 /**/
+.articles-list {
+    padding: 30px 0;
+    border-bottom: 1px solid black;
+}
+
 .comment {
     padding: 50px 0;
     border-bottom: 1px solid black;

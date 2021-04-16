@@ -9,10 +9,16 @@
 
     <h3>Liste des articles</h3>
         <% for(let item of data.data) { %>
-            <li>
+            <li class="articles-list">
+                <p>Author: <%- item.author.givenName %> <%- item.author.familyName %></p>
                 <h4><%- item.headline %></h4>
                 <a href="/post/<%- item._id %>">Voir plus</a>
             </li>
+            <form name="like_form" id="like_form" action="/like" method="POST">
+                <input type="hidden" name="post" id="post" value="<%- item._id %>">
+                <button type="submit" id="like-btn">J'aime</button>
+            </form>
+            <%- item.likes.length %>
         <% } %>
     <ul>
 </main>
