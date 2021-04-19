@@ -1,16 +1,16 @@
 /*
 Import
 */
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
-const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose')
+const { Schema } = mongoose
+const jwt = require('jsonwebtoken')
 //
 
 /*
 Definition
 */
 const MySchema = new Schema({
-    // Schema.org 
+    // Schema.org
     '@context': { type: String, default: 'http://schema.org' },
     '@type': { type: String, default: 'Person' },
 
@@ -32,8 +32,8 @@ Methods
 */
 MySchema.methods.generateJwt = user => {
     // Set expiration
-    const expiryToken = new Date();
-    expiryToken.setDate( expiryToken.getDate() + 59 );
+    const expiryToken = new Date()
+    expiryToken.setDate( expiryToken.getDate() + 59 )
 
     // Set token
     const jwtObject = {
@@ -48,7 +48,7 @@ MySchema.methods.generateJwt = user => {
     }
 
     // Retunr JWT
-    return jwt.sign( jwtObject, process.env.JWT_SECRET );
+    return jwt.sign( jwtObject, process.env.JWT_SECRET )
 }
 //
 

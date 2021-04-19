@@ -13,5 +13,5 @@ const Controllers = {
 /*  
 Export
 */
-module.exports = Controllers;
+module.exports = Controllers
 //

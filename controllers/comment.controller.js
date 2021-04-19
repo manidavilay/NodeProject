@@ -1,7 +1,7 @@
 /* 
 Imports
 */
-const Models = require('../models/index');
+const Models = require('../models/index')
 //
 
 /*  
@@ -21,8 +21,12 @@ const readAll = () => {
         Models.comment.find()
         .populate('author', ['-password'])
         .exec((err, data) => {
-            if (err) { return reject(err) }
-            else { return resolve(data) }
+            if (err) { 
+                return reject(err) 
+            }
+            else { 
+                return resolve(data) 
+            }
         })
     })
 }
@@ -33,8 +37,12 @@ const readOne = id => {
         Models.comment.findById(id)
         .populate('author', ['-password'])
         .exec((err, data) => {
-            if (err) { return reject(err) }
-            else { return resolve(data) }
+            if (err) { 
+                return reject(err)
+            }
+            else { 
+                return resolve(data) 
+            }
         })
     })
 }
@@ -46,8 +54,12 @@ const readAllInPost = postId => {
             .populate('comment', ['content', 'author'])
             .populate('author', ['-password'])
             .exec((err, data) => {
-                if (err) { return reject(err) }
-                else { return resolve(data) }
+                if (err) { 
+                    return reject(err) 
+                }
+                else { 
+                    return resolve(data) 
+                }
             })
     })
 }
@@ -85,12 +97,16 @@ const deleteOne = req => {
             }
 
             Models.comment.findByIdAndDelete(req.body.id, (err, deleted) => {
-                if (err) { return reject(err) }
-                else { return resolve(deleted) };  
+                if (err) { 
+                    return reject(err) 
+                }
+                else { 
+                    return resolve(deleted) 
+                }
             })
         })
         .catch(err => reject(err))
-    });
+    })
 }
 
 /* 

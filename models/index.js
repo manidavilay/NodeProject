@@ -12,5 +12,5 @@ const Models = {
 /* 
 Export
 */
-module.exports = Models;
+module.exports = Models
 // 

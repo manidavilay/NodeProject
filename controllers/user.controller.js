@@ -1,7 +1,7 @@
 /* 
 Imports
 */
-const Models = require('../models/index');
+const Models = require('../models/index')
 //
 
 /*  
@@ -13,20 +13,28 @@ const readOne = id => {
         Models.user.findById(id)
         .populate('author', ['-password'])
         .exec((err, data) => {
-            if(err) {return reject(err)}
-            else {return resolve(data)}
+            if (err) {
+                return reject(err)
+            }
+            else {
+                return resolve(data)
+            }
         })
     })
 }
  
 const readAll = () => {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         // Mongoose population to get associated data
         Models.user.find()
         .populate('author', ['-password'])
         .exec((err, data) => {
-            if(err) {return reject(err)}
-            else {return resolve(data)}
+            if (err) {
+                return reject(err)
+            }
+            else {
+                return resolve(data)
+            }
         })
     })
 }

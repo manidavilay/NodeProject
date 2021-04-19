@@ -31,8 +31,12 @@
                         <form name="like_form" id="like_form" action="/like" method="POST">
                             <input type="hidden" name="comment" id="comment" value="<%- item._id %>">
                             <button type="submit" id="like-btn">J'aime</button>
-                        </form>
-                        <%- item.likes.length %>
+                        </form><br>
+                        <form name="dislike_form" id="dislike_form" action="/like/<%- item._id %>/delete" method="POST">
+                            <input type="hidden" name="comment" id="comment" value="<%- item._id %>">
+                            <button type="submit" id="like-btn">Je n'aime plus</button>
+                        </form><br>
+                        <span><%- item.likes.length %></span>
                     </div>
                     <% if( item.author.id == data.data.user.id ) { %>
                         <div id="<%- item.id %>" class="update-form">

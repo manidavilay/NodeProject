@@ -1,7 +1,7 @@
 /* 
 Imports
 */
-const Models = require('../models/index');
+const Models = require('../models/index')
 //
 
 /*  
@@ -16,7 +16,7 @@ const createOne = req => {
             if (data.comment != null) {
                 Models.comment.findById(data.comment)
                 .then(comment => {
-                    comment.likes.push(data._id);
+                    comment.likes.push(data._id)
                     comment.save()
                     .then(updatedComment => resolve(updatedComment))
                     .catch(updateError => reject(updateError))
@@ -43,12 +43,14 @@ const createOne = req => {
 }
 
 const deleteOne = req => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         Models.like.findByIdAndDelete(req._id)
         .then(async () => {
+            resolve(req)
             // Comment's likes
             if (req.comment != null) {
-                Models.comment.findById(req.comment)
+                console.log('test')
+                await Models.comment.findById(req.comment)
                 .then(comment => {
                     comment.likes.splice(req._id)
                     comment.save()
@@ -60,7 +62,7 @@ const deleteOne = req => {
 
             // Post's likes
             else if (req.post != null) {
-                Models.post.findById(req.post)
+               await Models.post.findById(req.post)
                 .then(post => {
                     post.likes.splice(req._id)
                     post.save()
@@ -72,6 +74,7 @@ const deleteOne = req => {
         })
         .catch(err => reject(err))
     })
+    .catch(err => reject(err))
 }
 //
 
