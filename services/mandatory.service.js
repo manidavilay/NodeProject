@@ -5,7 +5,8 @@ Definition
         register: [ 'givenName', 'familyName', 'password', 'email' ],
         login: [ 'password', 'email' ],
         post: [ 'headline', 'body' ],
-        comment: [ 'content', 'post' ]
+        comment: [ 'content', 'post' ],
+        like: []
     } 
 //
 

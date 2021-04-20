@@ -45,8 +45,7 @@ class BackendRouter {
                 user: '',
                 post: '',
                 comments: '',
-                postLikes: '',
-                commentLikes: ''
+                likes: ''
             }
 
             await Controllers['user'].readOne(req.user.id)
@@ -58,10 +57,16 @@ class BackendRouter {
             .catch(() => data.post = null)
 
             await Controllers['comment'].readAllInPost(data.post.id)
-            .then(comments => {
-                data.comments = comments
-            })
+            .then(comments => data.comments = comments)
             .catch(() => data.comments = null)
+
+            // await Controllers['like'].readLikesInPost(data.post.id)
+            // .then(likes => data.likes = likes)
+            // .catch(() => data.likes = null)
+
+            await Controllers['like'].readLikesInComment(data.comments)
+            .then(likes => data.likes = likes)
+            .catch(() => data.likes = null)
             
             renderSuccessVue('post', req, res, data, 'Request succeed', false)
         })
@@ -167,20 +172,11 @@ class BackendRouter {
         })
 
         // [BACKOFFICE] get data from client to create object, protected by Passport MiddleWare - Delete
-        this.router.post('/:endpoint/:id/delete', this.passport.authenticate('jwt', {session: false, failureRedirect: '/'}), (req, res) => {
-            // Check body data
-            if (typeof req.body === 'undefined' || req.body === null || Object.keys(req.body).length === 0) {
-                return renderErrorVue('index', req, res, 'No data provided', 'Request failed')
-            } 
-            else {
-                // Add author _id
-                req.body.author = req.user._id
-
-                //Use the controller to create next object
-                Controllers[req.params.endpoint].deleteOne(req)
-                .then(apiResponse => res.redirect('/', req, res, 'Request succeed', apiResponse, true))
-                .catch(apiError => renderErrorVue('index', req, res, apiError, 'Request failed'))
-            }
+        this.router.post('/delete/:endpoint/:id', this.passport.authenticate('jwt', {session: false, failureRedirect: '/'}), async (req, res) => {
+            //Use the controller to create next object
+            await Controllers[req.params.endpoint].deleteOne(req)
+            .then(apiResponse => res.redirect('/', req, res, 'Request succeed', apiResponse, true))
+            .catch(apiError => renderErrorVue('index', req, res, apiError, 'Request failed'))
         })
     }
 

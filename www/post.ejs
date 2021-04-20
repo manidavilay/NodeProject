@@ -20,8 +20,9 @@
                 <li class="comment">
                     Auteur du commentaire: <%- item.author.givenName %><br>
                     Commentaire:<br><%- item.content %>
+                    <div><%- item.likes.length %> J'aime</div><br>
                     <div class="buttons-block">
-                        <form name="comment_form_delete" id="comment_form_delete" action="/comment/<%- item.id %>/delete" method="POST">
+                        <form name="comment_form_delete" id="comment_form_delete" action="/delete/comment/<%- item._id %>" method="POST">
                             <input type="hidden" name="id" value="<%- item.id %>">
                             <input type="hidden" name="post" id="post" value="<%- data.data.post.id %>">
                             <% if( item.author.id == data.data.user.id ) { %>
@@ -32,11 +33,14 @@
                             <input type="hidden" name="comment" id="comment" value="<%- item._id %>">
                             <button type="submit" id="like-btn">J'aime</button>
                         </form><br>
-                        <form name="dislike_form" id="dislike_form" action="/like/<%- item._id %>/delete" method="POST">
-                            <input type="hidden" name="comment" id="comment" value="<%- item._id %>">
-                            <button type="submit" id="like-btn">Je n'aime plus</button>
-                        </form><br>
-                        <span><%- item.likes.length %></span>
+                        <% let likeId = '' %>
+                        <% for (let item of data.data.likes) { %>
+                            <% if (item.author.id == data.data.user.id) {
+                                likeId = item._id
+                            } %>
+                            <%- item._id %>
+                        <% } %>                   
+                        <a href="/delete/like/<%- likeId %>">Je n'aime plus</a><br>
                     </div>
                     <% if( item.author.id == data.data.user.id ) { %>
                         <div id="<%- item.id %>" class="update-form">
