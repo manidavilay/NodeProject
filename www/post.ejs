@@ -9,6 +9,28 @@
     <p>Utilisateur: <%- data.data.user.givenName %></p><br>
     <%- data.data.post.headline %><br>
     <%- data.data.post.body %><br>
+    <%- data.data.post.likes.length %> J'aime<br>
+
+    <% let postLikesId = '' %>
+    <% let userAlreadyLikedPost = false %>
+    <% for (let item of data.data.postLikes) { %>
+        <% if (item.author.id == data.data.user.id) {
+            userAlreadyLikedPost = true
+            postLikesId = item._id
+        } %>
+    <% } %>
+    <% if (userAlreadyLikedPost == false) { %>
+        <form name="like-form" id="like-form" action="/like" method="POST">
+            <input type="hidden" name="post" id="post" value="<%- data.data.post._id %>">
+            <button type="submit" id="like-btn">J'aime ce post</button>
+        </form>
+    <% } else { %>
+        <form name="dislike-btn" id="dislike-btn" action="/delete/like/<%- postLikesId %>" method="POST">
+            <input type="hidden" name="id" value="">
+            <input type="hidden" name="post" id="post" value="">
+            <button type="submit" class="error-btn delete-btn">Je n'aime plus ce post</button>
+        </form>
+    <% } %>
 
     <%- include('components/form-comment') -%>
 
@@ -22,40 +44,48 @@
                     Commentaire:<br><%- item.content %>
                     <div><%- item.likes.length %> J'aime</div><br>
                     <div class="buttons-block">
-                        <form name="comment_form_delete" id="comment_form_delete" action="/delete/comment/<%- item._id %>" method="POST">
-                            <input type="hidden" name="id" value="<%- item.id %>">
-                            <input type="hidden" name="post" id="post" value="<%- data.data.post.id %>">
-                            <% if( item.author.id == data.data.user.id ) { %>
-                                <button type="submit" class="error-btn delete-btn">Supprimer</button>
-                            <% } %>
-                        </form>
-                        <form name="like_form" id="like_form" action="/like" method="POST">
-                            <input type="hidden" name="comment" id="comment" value="<%- item._id %>">
-                            <button type="submit" id="like-btn">J'aime</button>
-                        </form><br>
-                        <% let likeId = '' %>
-                        <% for (let item of data.data.likes) { %>
-                            <% if (item.author.id == data.data.user.id) {
-                                likeId = item._id
+                        <% let commentLikesId = '' %>
+                        <% let userAlreadyLikedComment = false %>
+                        <% for (let item of data.data.commentLikes) { %>
+                            <% if (item.author.id === data.data.user.id) {
+                                userAlreadyLikedComment = true
+                                commentLikesId = item._id
                             } %>
-                            <%- item._id %>
-                        <% } %>                   
-                        <a href="/delete/like/<%- likeId %>">Je n'aime plus</a><br>
+                        <% } %>
+                        <%- item %><br><br>
+                        Id du like <%- item.likes %><br>
+                        Id du commentaire <%- item._id %><br>
+                        <% if (userAlreadyLikedComment === false) { %>
+                            <form name="like-form" id="like-form" action="/like" method="POST">
+                                <input type="hidden" name="comment" id="comment" value="<%- item._id %>">
+                                <button type="submit" id="like-btn">J'aime ce commentaire</button>
+                            </form><br>   
+                        <% } else { %>
+                            <form name="dislike-btn" id="dislike-btn" action="/delete/like/<%- commentLikesId %>" method="POST">
+                                <input type="hidden" name="id" value="">
+                                <input type="hidden" name="post" id="post" value="">
+                                <button type="submit" class="error-btn delete-btn">Je n'aime plus ce commentaire</button>
+                            </form>          
+                        <% } %>
                     </div>
-                    <% if( item.author.id == data.data.user.id ) { %>
+                    <% if (item.author.id == data.data.user.id) { %>
                         <div id="<%- item.id %>" class="update-form">
-                            <form name="comment_form_update" id="comment_form_update" action="/comment/<%- item.id %>" method="POST">
-
+                            <form name="comment-update" id="comment-update" action="/comment/<%- item.id %>" method="POST">
                                 <input type="hidden" name="id" value="<%- item.id %>">
                                 <input type="hidden" name="post" id="post" placeholder="<%- data.data.post.id %>">
-
                                 <label for="email">Modifier votre commentaire</label><br><br>
                                 <textarea name="content" id="content" rows="100" required><%- item.content %></textarea><br><br><br>
-
-                                <button type="submit" class="success-btn">Modifier</button>
+                                <button type="submit" class="success-btn">Modifier ce commentaire</button>
                             </form>
                         </div>
                     <% } %>
+                    <form name="comment-delete" id="comment-delete" action="/delete/comment/<%- item._id %>" method="POST">
+                        <input type="hidden" name="id" value="<%- item.id %>">
+                        <input type="hidden" name="post" id="post" value="<%- data.data.post.id %>">
+                        <% if( item.author.id == data.data.user.id ) { %>
+                            <button type="submit" class="error-btn delete-btn">Supprimer ce commentaire</button>
+                        <% } %>
+                    </form>
             <% } %>
         </ul>
     <% } %>

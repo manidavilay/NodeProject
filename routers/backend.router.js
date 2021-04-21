@@ -60,13 +60,13 @@ class BackendRouter {
             .then(comments => data.comments = comments)
             .catch(() => data.comments = null)
 
-            // await Controllers['like'].readLikesInPost(data.post.id)
-            // .then(likes => data.likes = likes)
-            // .catch(() => data.likes = null)
+            await Controllers['like'].readLikesInPost(data.post.id)
+            .then(postLikes => data.postLikes = postLikes)
+            .catch(() => data.postLikes = null)
 
             await Controllers['like'].readLikesInComment(data.comments)
-            .then(likes => data.likes = likes)
-            .catch(() => data.likes = null)
+            .then(commentLikes => data.commentLikes = commentLikes)
+            .catch(() => data.commentLikes = null)
             
             renderSuccessVue('post', req, res, data, 'Request succeed', false)
         })

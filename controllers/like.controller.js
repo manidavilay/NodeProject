@@ -52,8 +52,7 @@ const readLikesInPost = postId => {
         .exec((err, data) => {
             if (err) {
                 return reject(err)
-            }
-            else {
+            } else {
                 return resolve(data)
             }
         })
@@ -65,6 +64,7 @@ const readLikesInComment = commentId => {
         // Mongoose population to get associated data
         Models.like.find({comment: commentId})
         .populate('like', ['comment', 'author'])
+        .populate('comment')
         .populate('author', ['-password'])
         .exec((err, data) => {
             if (err) { 
@@ -82,9 +82,8 @@ const deleteOne = req => {
         Models.like.findById(req.params.id)
         .populate('author', ['-password'])
         .then(data => {
-            
             // Check user 
-            if (String(comment.author) !== String(req.user._id)) {
+            if (String(data.author._id) !== String(req.user._id)) {
                 reject('User not authorized')
             }
             else {
@@ -93,7 +92,6 @@ const deleteOne = req => {
                         return reject(err)
                     }
                     else {
-
                         // Comment's likes
                         if (data.comment) {
                             Models.comment.findById(data.comment)

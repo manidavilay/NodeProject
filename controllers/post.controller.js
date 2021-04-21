@@ -20,6 +20,8 @@ const readAll = () => {
         // Mongoose population to get associated data
         Models.post.find()
         .populate('author', ['-password'])
+        .populate('comments')
+        .populate('likes')
         .exec((err, data) => {
             if (err) { 
                 return reject(err)
@@ -36,6 +38,8 @@ const readOne = id => {
         // Mongoose population to get associated data
         Models.post.findById( id )
         .populate('author', ['-password'])
+        .populate('likes')
+        .populate('comments')
         .exec((err, data) => {
             if (err) { 
                 return reject(err) 
@@ -90,9 +94,9 @@ const deleteOne = req => {
 Export controller methods
 */
 module.exports = {
+    createOne,
     readAll,
     readOne,
-    createOne,
     updateOne,
     deleteOne
 }

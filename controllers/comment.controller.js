@@ -10,7 +10,17 @@ CRUD methods
 const createOne = req => {
     return new Promise((resolve, reject) => {
         Models.comment.create(req.body)
-        .then(data => { resolve(data) })
+        .then(data => {
+            resolve(data)
+            Models.post.findById(data.post)
+            .then(post => {
+                post.comments.push(data._id)
+                post.save()
+                .then(updatedPost => resolve(updatedPost))
+                .catch(updateError => reject(updateError))
+            })
+        .catch(err => reject(err))
+        } )
         .catch(err => reject(err))
     })
 }
@@ -20,6 +30,7 @@ const readAll = () => {
         // Mongoose population to get associated data
         Models.comment.find()
         .populate('author', ['-password'])
+        .populate('likes')
         .exec((err, data) => {
             if (err) { 
                 return reject(err) 
@@ -36,6 +47,7 @@ const readOne = id => {
         // Mongoose population to get associated data
         Models.comment.findById(id)
         .populate('author', ['-password'])
+        .populate('likes')
         .exec((err, data) => {
             if (err) { 
                 return reject(err)

@@ -157,7 +157,7 @@ ul {
 
 .articles-list {
     width: calc(50% - 20px);
-    margin: 10px 0;
+    margin: 10px;
     padding: 30px;
     border: 1px solid lightgray;
     border-radius: 10px;
@@ -180,4 +180,29 @@ ul {
 .edit-button {
     margin-top: -5px;
     margin-right: 20px;
+}
+
+.dislike-button {
+    border-radius: .4rem;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    height: 3.8rem;
+    letter-spacing: .1rem;
+    line-height: 3.8rem;
+    padding: 0 3.0rem;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+    background-color: red;
+}
+
+.dislike-button:hover {
+    background-color: #606c76;
+    border-color: #606c76;
+    color: #fff;
+    outline: 0;
 }

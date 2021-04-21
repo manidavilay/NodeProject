@@ -8,21 +8,18 @@
     <%- include('components/form-post') -%>
 
     <h3>Liste des articles</h3>
-    <ul class="articles-block">
-        <% for(let item of data.data) { %>
-            <li class="articles-list">
-                <p>Auteur de l'article: <%- item.author.givenName %> <%- item.author.familyName %></p>
-                <h4>Titre de l'article: <%- item.headline %></h4>
-                {# <span><%- item.comments.length %> Commentaire </span><br> #}
-                <span><%- item.likes.length %> J'aime</span><br><br>
-                <form name="like_form" id="like_form" action="/like" method="POST">
-                    <input type="hidden" name="post" id="post" value="<%- item._id %>">
-                    <button type="submit" id="like-btn">J'aime</button>
-                </form>
-                <a href="/post/<%- item._id %>" class="articles-see-more">Voir plus</a>
-            </li>
-        <% } %>
-    <ul>
+    <% if (data.data) { %>
+        Nombre d'articles: <%- data.data.length %>
+        <ul class="articles-block">
+            <% for(let item of data.data) { %>
+                <li class="articles-list">
+                    <p>Auteur de l'article: <%- item.author.givenName %> <%- item.author.familyName %></p>
+                    <h4>Titre de l'article: <%- item.headline %></h4>
+                    <a href="/post/<%- item._id %>" class="articles-see-more">Voir plus</a>
+                </li>
+            <% } %>
+        <ul>
+    <% } %>
 </main>
 
 <!-- Importer le footer en EJS -->
