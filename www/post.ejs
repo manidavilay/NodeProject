@@ -55,10 +55,6 @@
                                 commentLikesId = like._id
                             } %>
                         <% } %>
-                        <!-- commentLikesId %>
-                        <!- data.data.commentLikes %><br>
-                        ID DU LIKE: <!- item.likes %><br>
-                        ID DU COMMENTAIRE: <- item._id %>-->
                         <% if (userAlreadyLikedComment == false) { %>
                             <form name="like-form" id="like-form" action="/like" method="POST">
                                 <input type="hidden" name="comment" id="comment" value="<%- item._id %>">

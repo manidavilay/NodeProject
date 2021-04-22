@@ -16,12 +16,14 @@ const MySchema = new Schema({
         ref: 'user'  
     },
 
+    // Associer le commentaire
     comment: {
         type: Schema.Types.ObjectId,
         ref: 'comment',
         default: null
     },
 
+    // Associer le post
     post: {
         type: Schema.Types.ObjectId,
         ref: 'post',

@@ -24,6 +24,7 @@ const MySchema = new Schema({
         ref: 'post'
     },
 
+    // Associer les likes
     likes: [{
         type: Schema.Types.ObjectId,
         ref: 'like'

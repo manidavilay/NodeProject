@@ -22,11 +22,13 @@ const MySchema = new Schema({
         ref: 'user'  
     },
 
+    // Associer les commentaires
     comments: [{
         type: Schema.Types.ObjectId,
         ref: 'comment'  
     }],
 
+    // Associer les likes
     likes: [{
         type: Schema.Types.ObjectId,
         ref: 'like'
