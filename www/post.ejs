@@ -11,6 +11,7 @@
     <%- data.data.post.body %><br>
     <%- data.data.post.likes.length %> J'aime<br>
 
+    <!-- Like post form -->
     <% let postLikesId = '' %>
     <% let userAlreadyLikedPost = false %>
     <% for (let item of data.data.postLikes) { %>
@@ -44,18 +45,21 @@
                     Commentaire:<br><%- item.content %>
                     <div><%- item.likes.length %> J'aime</div><br>
                     <div class="buttons-block">
+
+                        <!-- Like/dislike comment form -->
                         <% let commentLikesId = '' %>
                         <% let userAlreadyLikedComment = false %>
-                        <% for (let item of data.data.commentLikes) { %>
-                            <% if (item.author.id === data.data.user.id) {
+                        <% for (let like of item.likes) { %>
+                            <% if (like.author.id == data.data.user.id) {
                                 userAlreadyLikedComment = true
-                                commentLikesId = item._id
+                                commentLikesId = like._id
                             } %>
                         <% } %>
-                        <%- item %><br><br>
-                        Id du like <%- item.likes %><br>
-                        Id du commentaire <%- item._id %><br>
-                        <% if (userAlreadyLikedComment === false) { %>
+                        <!-- commentLikesId %>
+                        <!- data.data.commentLikes %><br>
+                        ID DU LIKE: <!- item.likes %><br>
+                        ID DU COMMENTAIRE: <- item._id %>-->
+                        <% if (userAlreadyLikedComment == false) { %>
                             <form name="like-form" id="like-form" action="/like" method="POST">
                                 <input type="hidden" name="comment" id="comment" value="<%- item._id %>">
                                 <button type="submit" id="like-btn">J'aime ce commentaire</button>
@@ -68,6 +72,8 @@
                             </form>          
                         <% } %>
                     </div>
+
+                    <!-- Update comment form -->
                     <% if (item.author.id == data.data.user.id) { %>
                         <div id="<%- item.id %>" class="update-form">
                             <form name="comment-update" id="comment-update" action="/comment/<%- item.id %>" method="POST">
@@ -79,6 +85,8 @@
                             </form>
                         </div>
                     <% } %>
+
+                    <!-- Delete comment form -->
                     <form name="comment-delete" id="comment-delete" action="/delete/comment/<%- item._id %>" method="POST">
                         <input type="hidden" name="id" value="<%- item.id %>">
                         <input type="hidden" name="post" id="post" value="<%- data.data.post.id %>">

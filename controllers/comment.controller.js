@@ -65,6 +65,9 @@ const readAllInPost = postId => {
         Models.comment.find({ post: postId })
         .populate('comment', ['content', 'author'])
         .populate('author', ['-password'])
+        .populate({
+            path: 'likes', populate: 'author'
+        })
         .exec((err, data) => {
             if (err) { 
                 return reject(err) 
